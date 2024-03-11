@@ -1,10 +1,10 @@
 s3_conf:
-  s3_bucket: test-tushar-test
+ s3_bucket: spark-faisal-spark
 
 sftp_conf:
-    filetype: csv
-    delimiter: |
-    directory: /home/ubuntu/data
+ filetype: csv
+ delimiter: |
+ directory: /home/ubuntu/data
 
 mysql_conf:
   dbtable: testdb.TRANSACTIONSYNC
