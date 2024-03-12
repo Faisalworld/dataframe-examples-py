@@ -6,7 +6,6 @@ from pyspark.sql.types import StructType, StructField, LongType, DoubleType, Int
 if __name__ == "__main__":
     spark = SparkSession \
         .builder \
-        .master("local[*]") \
         .config('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:2.7.4') \
         .appName("DataFrame Through RDD") \
         .getOrCreate()
@@ -46,5 +45,4 @@ if __name__ == "__main__":
     txn_fct_df.printSchema()
     txn_fct_df.show(5, False)
 
-    # spark-submit --master yarn --packages "org.apache.hadoop:hadoop-aws:2.7.4"
-    # practice_dataframe/practice_ingestion/practice_rdd/practice_rdd2df_thru_explicit_schema.py
+    # spark-submit --master yarn --packages "org.apache.hadoop:hadoop-aws:2.7.4" practice_dataframe/practice_ingestion/practice_rdd/practice_rdd2df_thru_explicit_schema.py
