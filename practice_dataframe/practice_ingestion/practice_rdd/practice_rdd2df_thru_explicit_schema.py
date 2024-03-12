@@ -6,6 +6,8 @@ from pyspark.sql.types import StructType, StructField, LongType, DoubleType, Int
 if __name__ == "__main__":
     spark = SparkSession \
         .builder \
+        .master("local[*]") \
+        .config('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:2.7.4') \
         .appName("DataFrame Through RDD") \
         .getOrCreate()
 
@@ -13,17 +15,16 @@ if __name__ == "__main__":
 
     current_dir = os.path.abspath(os.path.dirname(__file__))  # current_dir = os.getcwd()
     app_config_path = os.path.abspath(current_dir + "/../../../" + "application.yml")
-    app_secret_path = os.path.abspath(current_dir + "/../../../" + ".secrets")
+    app_secrets_path = os.path.abspath(current_dir + "/../../../" + ".secrets")
 
     conf = open(app_config_path)
     app_conf = yaml.load(conf, Loader=yaml.FullLoader)
-
-    secrets = open(app_secret_path)
-    app_secrets = yaml.load(app_secret_path, Loader=yaml.FullLoader)
+    secret = open(app_secrets_path)
+    app_secret = yaml.load(secret, Loader=yaml.FullLoader)
 
     hadoop_conf = spark.sparkContext._jsc.hadoopConfiguration()
-    hadoop_conf.set("fs.s3a.access.key", app_conf["s3_conf"]["access_key"])
-    hadoop_conf.set("fs.s3a.secret.key", app_conf["s3_conf"]["secret_access_key"])
+    hadoop_conf.set("fs.s3a.access.key", app_secret["s3_conf"]["access_key"])
+    hadoop_conf.set("fs.s3a.secret.key", app_secret["s3_conf"]["secret_access_key"])
 
     txn_fct_rdd = spark.sparkContext.textFile("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/txn_fct.csv") \
         .filter(lambda record: record.find("txn_id")) \
@@ -45,5 +46,5 @@ if __name__ == "__main__":
     txn_fct_df.printSchema()
     txn_fct_df.show(5, False)
 
-    # spark-submit --master yarn --packages "org.apache.hadoop:hadoop-aws:3.2.4"
+    # spark-submit --master yarn --packages "org.apache.hadoop:hadoop-aws:2.7.4"
     # practice_dataframe/practice_ingestion/practice_rdd/practice_rdd2df_thru_explicit_schema.py
