@@ -46,4 +46,4 @@ if __name__ == "__main__":
     txn_fct_df.show(5, False)
 
     # spark-submit --master yarn --packages "org.apache.hadoop:hadoop-aws:3.2.4"
-    # dataframe/ingestion/rdd/rdd2df_thru_explicit_schema.py
+    # practice_dataframe/practice_ingestion/practice_rdd/practice_rdd2df_thru_explicit_schema.py
