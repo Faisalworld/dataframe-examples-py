@@ -1,7 +1,6 @@
 from pyspark.sql import SparkSession
 import yaml
 import os.path
-import utils.aws_utils as ut
 
 if __name__ == '__main__':
 
@@ -26,7 +25,14 @@ if __name__ == '__main__':
     secret = open(app_secrets_path)
     app_secret = yaml.load(secret, Loader=yaml.FullLoader)
 
-    jdbc_params = {"url": ut.get_mysql_jdbc_url(app_secret),
+
+    def get_mysql_jdbc_url(mysql_config: dict):
+        host = mysql_config["mysql_conf"]["hostname"]
+        port = mysql_config["mysql_conf"]["port"]
+        database = mysql_config["mysql_conf"]["database"]
+        return "jdbc:mysql://{}:{}/{}?autoReconnect=true&useSSL=false".format(host, port, database)
+
+    jdbc_params = {"url": get_mysql_jdbc_url(app_secret),
                   "lowerBound": "1",
                   "upperBound": "100",
                   "dbtable": app_conf["mysql_conf"]["dbtable"],
