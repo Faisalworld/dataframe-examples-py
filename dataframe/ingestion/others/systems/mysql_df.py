@@ -45,6 +45,6 @@ if __name__ == '__main__':
         .options(**jdbc_params)\
         .load()
 
-    txnDF.show()
+    txnDF.show(10)
 
 # spark-submit --packages "mysql:mysql-connector-java:8.0.15" dataframe/ingestion/others/systems/mysql_df.py

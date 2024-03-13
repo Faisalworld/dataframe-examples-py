@@ -26,10 +26,9 @@ if __name__ == "__main__":
     hadoop_conf.set("fs.s3a.secret.key", app_secret["s3_conf"]["secret_access_key"])
 
     txn_fct_rdd = spark.sparkContext.textFile("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/txn_fct.csv") \
-        .filter(lambda record: record.find("txn_id")) \
+        .filter(lambda record: "txn_id" not in record) \
         .map(lambda record: record.split("|")) \
-        .map(lambda record: Row(int(record[0]), int(record[1]), float(record[2]), int(record[3]), int(record[4]),
-                                int(record[5]), record[6]))
+        .map(lambda record: (record[0], record[1], record[2], record[3], record[4], record[5], record[6]))
 
     txn_fct_schema = StructType([
         StructField("txn_id", LongType(), False),
