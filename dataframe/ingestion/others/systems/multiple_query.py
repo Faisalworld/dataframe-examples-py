@@ -3,7 +3,6 @@ import yaml
 import os.path
 
 if __name__ == '__main__':
-
     os.environ["PYSPARK_SUBMIT_ARGS"] = (
         '--packages "mysql:mysql-connector-java:8.0.15" pyspark-shell'
     )
@@ -31,27 +30,29 @@ if __name__ == '__main__':
         database = mysql_config["mysql_conf"]["database"]
         return "jdbc:mysql://{}:{}/{}?autoReconnect=true&useSSL=false".format(host, port, database)
 
+
     jdbc_params = {"url": get_mysql_jdbc_url(app_secret),
-                  "lowerBound": "1",
-                  "upperBound": "100",
-                  "dbtable": app_conf["mysql_conf"]["dbtable"],
-                  "numPartitions": "2",
-                  "partitionColumn": app_conf["mysql_conf"]["partition_column"],
-                  "user": app_secret["mysql_conf"]["username"],
-                  "password": app_secret["mysql_conf"]["password"]
+                   "lowerBound": "1",
+                   "upperBound": "100",
+                   "numPartitions": "2",
+                   "partitionColumn": app_conf["mysql_conf"]["partition_column"],
+                   "user": app_secret["mysql_conf"]["username"],
+                   "password": app_secret["mysql_conf"]["password"]
                    }
     # print(jdbcParams)
 
     # use the ** operator/un-packer to treat a python dictionary as **kwargs
     print("\nReading data from MySQL DB using SparkSession.read.format(),")
-    txnDF = spark\
-        .read.format("jdbc")\
-        .option("driver", "com.mysql.cj.jdbc.Driver")\
-        .options(**jdbc_params)\
-        .load()
 
-    txnDF.show(10)
+    for query in app_conf["mysql_conf"]["query_list"]:
+        jdbc_params["dbtable"] = query
+        print("Current Query :", query)
+        txnDF = spark \
+            .read.format("jdbc") \
+            .option("driver", "com.mysql.cj.jdbc.Driver") \
+            .options(**jdbc_params) \
+            .load()
 
-
+        txnDF.show(10)
 
 # spark-submit --master yarn --packages "mysql:mysql-connector-java:8.0.15" dataframe/ingestion/others/systems/mysql_df.py
