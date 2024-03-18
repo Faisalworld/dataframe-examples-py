@@ -50,7 +50,7 @@ if __name__ == '__main__':
         .options(**jdbc_params)\
         .load()
 
-    txnDF.show(10)
+    txnDF.select("App_Transaction_Id", "Internal_Member_Id", "Location_External_Reference").show(5)
 
 
 
