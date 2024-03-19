@@ -22,7 +22,7 @@ if __name__ == '__main__':
     app_secret = yaml.load(secret, Loader=yaml.FullLoader)
 
     ol_txn_df = spark.read\
-        .format("com.springml.spark.sftp.DefaultSource")\
+        .format("com.springml.spark.sftp")\
         .option("host", app_secret["sftp_conf"]["hostname"])\
         .option("port", app_secret["sftp_conf"]["port"])\
         .option("username", app_secret["sftp_conf"]["username"])\
