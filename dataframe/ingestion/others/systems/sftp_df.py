@@ -29,8 +29,8 @@ if __name__ == '__main__':
         .option("pem", os.path.abspath(current_dir + "/../../../../" + app_secret["sftp_conf"]["pem"]))\
         .option("fileType", "csv")\
         .option("delimiter", "|")\
-        .load("home/ubuntu/data" + "/receipts_delta_GBR_14_10_2017.csv")
+        .load(app_conf["sftp_conf"]["directory"] + "/receipts_delta_GBR_14_10_2017.csv")
 
     ol_txn_df.show(5, False)
 
-# spark-submit --master yarn --packages "com.springml:spark-sftp_2.11:1.1.5" dataframe/ingestion/others/systems/sftp_df.py
+# spark-submit --master yarn --packages "com.springml:spark-sftp_2.11:1.1.1" dataframe/ingestion/others/systems/sftp_df.py
