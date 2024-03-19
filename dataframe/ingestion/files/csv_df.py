@@ -60,14 +60,14 @@ if __name__ == '__main__':
     finance_df.printSchema()
     finance_df.show()
 
-    finance_df \
-        .repartition(2) \
-        .write \
-        .partitionBy("id") \
-        .mode("overwrite") \
-        .option("header", "true") \
-        .option("delimiter", "~") \
-        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/fin")
+    # finance_df \
+    #     .repartition(2) \
+    #     .write \
+    #     .partitionBy("id") \
+    #     .mode("overwrite") \
+    #     .option("header", "true") \
+    #     .option("delimiter", "~") \
+    #     .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/fin")
 
     spark.stop()
 

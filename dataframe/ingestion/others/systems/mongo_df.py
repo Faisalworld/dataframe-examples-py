@@ -20,7 +20,6 @@ if __name__ == '__main__':
     spark = SparkSession \
         .builder \
         .appName("Read ingestion enterprise applications") \
-        .master('local[*]') \
         .config("spark.mongodb.input.uri", app_secret["mongodb_config"]["uri"])\
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
@@ -28,11 +27,11 @@ if __name__ == '__main__':
     students = spark\
         .read\
         .format("com.mongodb.spark.sql.DefaultSource")\
-        .option("database", app_conf["mongodb_config"]["database"])\
-        .option("collection", app_conf["mongodb_config"]["collection"])\
+        .option("database", app_conf["mongodb_conf"]["database"])\
+        .option("collection", app_conf["mongodb_conf"]["collection"])\
         .load()
 
     students.show()
 
-# spark-submit --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" dataframe/ingestion/others/systems/mongo_df.py
+# spark-submit --master yarn --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" dataframe/ingestion/others/systems/mongo_df.py
 # spark-submit --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" MonksProject/com/test/source_data_loading.py

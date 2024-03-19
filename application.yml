@@ -14,7 +14,7 @@ mysql_conf:
     - (select * from testdb.TRANSACTIONSYNC where Location_External_Reference = 'WEB') as t
     - (select * from testdb.TRANSACTIONSYNC where Location_External_Reference = 'MOBILE') as t
 
-mongodb_config:
+mongodb_conf:
   database: school
   collection: students
 
