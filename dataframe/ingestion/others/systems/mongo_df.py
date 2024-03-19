@@ -35,3 +35,4 @@ if __name__ == '__main__':
     students.show()
 
 # spark-submit --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" dataframe/ingestion/others/systems/mongo_df.py
+# spark-submit --packages "org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" MonksProject/com/test/source_data_loading.py
