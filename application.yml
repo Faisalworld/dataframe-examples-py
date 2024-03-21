@@ -15,7 +15,7 @@ mysql_conf:
     - (select * from testdb.TRANSACTIONSYNC where Location_External_Reference = 'MOBILE') as t
 
 mongodb_conf:
-  database: address
+  database: addr
   collection: address
 
 redshift_conf:
