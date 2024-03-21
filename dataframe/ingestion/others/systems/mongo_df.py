@@ -20,7 +20,7 @@ if __name__ == '__main__':
     spark = SparkSession \
         .builder \
         .appName("Read ingestion enterprise applications") \
-        .config("spark.mongodb.input.uri" + app_secret["mongodb_config"]["uri"])\
+        .config("spark.mongodb.input.uri", app_secret["mongodb_config"]["uri"])\
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
 
@@ -29,6 +29,7 @@ if __name__ == '__main__':
         .format("com.mongodb.spark.sql.DefaultSource")\
         .option("spark.mongodb.input.database", "addr")\
         .option("spark.mongodb.input.collection", "address")\
+        .option("spark.mongodb.input.uri", app_secret["mongodb_config"]["uri"])\
         .load()
 
     students.show()
