@@ -28,7 +28,7 @@ if __name__ == '__main__':
         .read\
         .format("com.mongodb.spark.sql.DefaultSource")\
         .option("spark.mongodb.input.database", "addr")\
-        .option("spark.mongodb.input.database", "addr")\
+        .option("spark.mongodb.input.collection", "address")\
         .load()
 
     students.show()
