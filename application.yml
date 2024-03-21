@@ -15,8 +15,8 @@ mysql_conf:
     - (select * from testdb.TRANSACTIONSYNC where Location_External_Reference = 'MOBILE') as t
 
 mongodb_conf:
-  database: school
-  collection: students
+  database: address
+  collection: address
 
 redshift_conf:
   filetype: csv
