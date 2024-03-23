@@ -1,14 +1,22 @@
 from pyspark.sql import SparkSession
 import yaml
 import os.path
-import utils.aws_utils as ut
 
 if __name__ == '__main__':
 
-    os.environ["PYSPARK_SUBMIT_ARGS"] = (
-        '--jars "https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/1.2.36.1060/RedshiftJDBC42-no-awssdk-1.2.36.1060.jar"\
-         --packages "io.github.spark-redshift-community:spark-redshift_2.11:4.0.1,org.apache.spark:spark-avro_2.11:2.4.2,org.apache.hadoop:hadoop-aws:2.7.4" pyspark-shell'
-    )
+    # os.environ["PYSPARK_SUBMIT_ARGS"] = (
+    #     '--jars "https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/1.2.36.1060/RedshiftJDBC42-no-awssdk-1.2.36.1060.jar"\
+    #      --packages "io.github.spark-redshift-community:spark-redshift_2.11:4.0.1,org.apache.spark:spark-avro_2.11:2.4.2,org.apache.hadoop:hadoop-aws:2.7.4" pyspark-shell'
+    # )
+
+    def get_redshift_jdbc_url(redshift_config: dict):
+        host = redshift_config["redshift_conf"]["host"]
+        port = redshift_config["redshift_conf"]["port"]
+        database = redshift_config["redshift_conf"]["database"]
+        username = redshift_config["redshift_conf"]["username"]
+        password = redshift_config["redshift_conf"]["password"]
+        return "jdbc:redshift://{}:{}/{}?user={}&password={}".format(host, port, database, username, password)
+
 
     # Create the SparkSession
     spark = SparkSession \
@@ -34,8 +42,10 @@ if __name__ == '__main__':
 
     print("Reading txn_fact table ingestion AWS Redshift and creating Dataframe,")
 
-    jdbc_url = ut.get_redshift_jdbc_url(app_secret)
+    jdbc_url = get_redshift_jdbc_url(app_secret)
+    # jdbc_url = "jdbc:redshift://myredshiftcluster.590183684400.eu-west-1.redshift-serverless.amazonaws.com:5439/dev"
     print(jdbc_url)
+
     txn_df = spark.read\
         .format("io.github.spark_redshift_community.spark.redshift")\
         .option("url", jdbc_url) \
@@ -46,4 +56,5 @@ if __name__ == '__main__':
 
     txn_df.show(5, False)
 
-# spark-submit --jars "https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/1.2.36.1060/RedshiftJDBC42-no-awssdk-1.2.36.1060.jar" --packages "io.github.spark-redshift-community:spark-redshift_2.11:4.0.1,org.apache.spark:spark-avro_2.11:2.4.2,org.apache.hadoop:hadoop-aws:2.7.4" dataframe/ingestion/others/systems/redshift_df.py
+# spark-submit  --packages "io.github.spark-redshift-community:spark-redshift_2.11:4.0.1,org.apache.spark:spark-avro_2.11:2.4.2,org.apache.hadoop:hadoop-aws:2.7.4" dataframe/ingestion/others/systems/redshift_df.py
+# --jars "https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/1.2.36.1060/RedshiftJDBC42-no-awssdk-1.2.36.1060.jar"
