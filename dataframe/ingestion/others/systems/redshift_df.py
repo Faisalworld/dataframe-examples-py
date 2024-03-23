@@ -60,7 +60,7 @@ if __name__ == '__main__':
     tnx_df = spark.read \
         .format("io.github.spark_redshift_community.spark.redshift") \
         .option("url", url) \
-        .option("dbtable", app_secret["redshift_conf"]["database"]) \
+        .option("dbtable", "public.txn_fct") \
         .option("tempdir", "s3://spark-faisal-spark/temp") \
         .option("aws_iam_role", aws_iam_role_arn) \
         .load()
