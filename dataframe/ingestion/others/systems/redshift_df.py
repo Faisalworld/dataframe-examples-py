@@ -43,9 +43,10 @@ if __name__ == '__main__':
     print("Reading txn_fact table ingestion AWS Redshift and creating Dataframe,")
 
     # jdbc_url = get_redshift_jdbc_url(app_secret)
-    # # jdbc_url = "jdbc:redshift://myredshiftcluster.590183684400.eu-west-1.redshift-serverless.amazonaws.com:5439/dev"
+    # # jdbc_url = "jdbc:redshift://myredshiftcluster.590183684400.eu-west-1.redshift-serverless.amazonaws.com:5439/dev?user=admin&password=Admin1234"
     # print(jdbc_url)
     #
+    # "jdbc:redshift://{}:{}/{}?user={}&password={}".format(host, port, database, username, password)
     # txn_df = spark.read\
     #     .format("io.github.spark_redshift_community.spark.redshift")\
     #     .option("url", jdbc_url) \
@@ -54,7 +55,7 @@ if __name__ == '__main__':
     #     .option("tempdir", "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp")\
     #     .load()
 
-    url = "jdbc:redshift://myredshiftcluster.590183684400.eu-west-1.redshift-serverless.amazonaws.com:5439/dev"
+    url = "jdbc:redshift://myredshiftcluster.590183684400.eu-west-1.redshift-serverless.amazonaws.com:5439/dev?user=admin&password=Admin1234"
     aws_iam_role_arn = "arn:aws:iam::590183684400:role/service-role/AmazonRedshift-CommandsAccessRole-20240322T172227"
 
     tnx_df = spark.read \
@@ -69,3 +70,8 @@ if __name__ == '__main__':
 
 # spark-submit  --packages "io.github.spark-redshift-community:spark-redshift_2.11:4.0.1,org.apache.spark:spark-avro_2.11:2.4.2,org.apache.hadoop:hadoop-aws:2.7.4" dataframe/ingestion/others/systems/redshift_df.py
 # --jars "https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/1.2.36.1060/RedshiftJDBC42-no-awssdk-1.2.36.1060.jar"
+
+
+# spark-submit --packages "io.github.spark-redshift-community:spark-redshift_2.11:4.0.1,org.apache.spark:spark-avro_2.11:2.4.2,org.apache.hadoop:hadoop-aws:2.7.4"\
+#   --jars "/usr/share/aws/redshift/jdbc/RedshiftJDBC.jar,/usr/share/aws/redshift/spark-redshift/lib/spark-redshift.jar,/usr/share/aws/redshift/spark-redshift/lib/spark-avro.jar,/usr/share/aws/redshift/spark-redshift/lib/minimal-json.jar" \
+#   dataframe/ingestion/others/systems/redshift_df.py
