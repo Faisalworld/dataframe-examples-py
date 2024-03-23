@@ -22,7 +22,7 @@ if __name__ == '__main__':
     spark = SparkSession \
         .builder \
         .appName("Read ingestion enterprise applications") \
-        .config("spark.jars", "redshift-jdbc42-2.1.0.26/")\
+        .config("spark.jars", "redshift-jdbc42-2.1.0.26")\
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
 
