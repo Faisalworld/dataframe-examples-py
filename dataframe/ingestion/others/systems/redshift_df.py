@@ -55,7 +55,7 @@ if __name__ == '__main__':
     #     .option("tempdir", "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp")\
     #     .load()
 
-    url = "jdbc:redshift://myredshiftcluster.590183684400.eu-west-1.redshift-serverless.amazonaws.com:5439/dev?user=admin&password=Admin1234"
+    url = "jdbc:redshift://myredshiftcluster.590183684400.eu-west-1.redshift-serverless.amazonaws.com:5439/dev?user=master&password=Master1234"
     aws_iam_role_arn = "arn:aws:iam::590183684400:role/service-role/AmazonRedshift-CommandsAccessRole-20240322T172227"
 
     tnx_df = spark.read \
