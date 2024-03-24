@@ -72,7 +72,7 @@ if __name__ == '__main__':
         .format("io.github.spark_redshift_community.spark.redshift") \
         .option("url", url) \
         .option("dbtable", "public.txn_fct_new") \
-        .option("tempdir", "s3://path/for/temp/data") \
+        .option("tempdir", "s3://spark-faisal-spark/temp") \
         .mode("overwrite") \
         .save()
 
