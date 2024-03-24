@@ -55,18 +55,18 @@ if __name__ == '__main__':
     #     .option("tempdir", "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp")\
     #     .load()
 
-    url = "jdbc:redshift://myredshiftcluster.590183684400.eu-west-1.redshift-serverless.amazonaws.com:5439/dev"
+    url = "jdbc:redshift://myredshiftcluster.590183684400.eu-west-1.redshift-serverless.amazonaws.com:5439/dev?user=admin&password=Admin1234"
     aws_iam_role_arn = "arn:aws:iam::590183684400:role/service-role/AmazonRedshift-CommandsAccessRole-20240322T172227"
 
     tnx_df = spark.read \
         .format("io.github.spark_redshift_community.spark.redshift") \
         .option("url", url) \
         .option("dbtable", "public.txn_fct") \
+        .option("forward_spark_s3_credentials", "true") \
         .option("tempdir", "s3://spark-faisal-spark/temp") \
         .option("aws_iam_role", aws_iam_role_arn) \
         .load()
 
-    # .option("forward_spark_s3_credentials", "true") \
     tnx_df.show(5, False)
 
     tnx_df.write \
@@ -75,12 +75,12 @@ if __name__ == '__main__':
         .option("dbtable", "public.txn_fct_new") \
         .option("tempdir", "s3://spark-faisal-spark/temp") \
         .option("aws_iam_role", "aws_iam_role_arn") \
+        .option("forward_spark_s3_credentials", "true") \
         .mode("error") \
         .save()
 
-    # .option("forward_spark_s3_credentials", "true") \
 
-        # spark-submit  --packages "io.github.spark-redshift-community:spark-redshift_2.11:4.0.1,org.apache.spark:spark-avro_2.11:2.4.2,org.apache.hadoop:hadoop-aws:2.7.4" dataframe/ingestion/others/systems/redshift_df.py
+# spark-submit  --packages "io.github.spark-redshift-community:spark-redshift_2.11:4.0.1,org.apache.spark:spark-avro_2.11:2.4.2,org.apache.hadoop:hadoop-aws:2.7.4" dataframe/ingestion/others/systems/redshift_df.py
 # --jars "https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/1.2.36.1060/RedshiftJDBC42-no-awssdk-1.2.36.1060.jar"
 
 
