@@ -74,7 +74,7 @@ if __name__ == '__main__':
         .option("dbtable", "public.txn_fct_new") \
         .option("tempdir", "s3://spark-faisal-spark/temp") \
         .option("forward_spark_s3_credentials", "true") \
-        .mode("overwrite") \
+        .mode("error") \
         .save()
 
 
